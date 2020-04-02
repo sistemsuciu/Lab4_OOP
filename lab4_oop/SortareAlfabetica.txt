@@ -1,0 +1,66 @@
+void UI::cautaMedicament()
+{
+	DynamicVector vector = this->ctrl.getRepository().getMedicamente();
+	Medicament* medicament = vector.getAllElems();
+	Medicament med_rez[100];
+	cout << "Introdu primele litere ale medicamentului cautat: ";
+	std::string lit;
+	cin >> lit;
+	int pos = -1, ok = 0, lungime, j = 0;
+	lungime = lit.length();
+	if (lit == "0")
+		lit = "";
+	for (int i = 0; i < vector.getSize(); i++)
+	{
+		Medicament m = medicament[i];
+		pos = -1;
+
+		pos = medicament[i].getNume().find(lit);
+		if (pos != -1) 
+		{
+			med_rez[j].setNume(medicament[i].getNume());
+			med_rez[j].setCantitate(medicament[i].getCantitate());
+			med_rez[j].setConcentratie(medicament[i].getConcentratie());
+			med_rez[j].setPret(medicament[i].getPret());
+
+			j++;
+			ok = 1;
+		}
+
+	}
+
+	for (int i = 0; i < j - 1; i++)
+	{
+	for (int k = i + 1; k < j; k++)
+	{
+	string x = med_rez[i].getNume();
+	string y = med_rez[k].getNume();
+	if (x.compare(y)>0)
+	{
+	string aux;
+	aux = x;
+	x = y;
+	y = aux;
+	}
+
+	med_rez[i].setNume(x);
+	med_rez[k].setNume(y);
+	}
+
+	}
+
+	if (ok == 1 && lungime != 0)
+		for (int i = 0; i < j; i++)
+		{
+			cout << i + 1 << "." << "Denumire: " << med_rez[i].getNume() << endl;
+			cout << "  Concentratie: " << med_rez[i].getConcentratie() << " %" << endl;
+			if (med_rez[i].getCantitate() == 1)
+				cout << "  Cantitate: " << med_rez[i].getCantitate() << " cutie" << endl; //1 cutie
+			else
+				cout << "  Cantitate: " << med_rez[i].getCantitate() << " cutii" << endl; //mai multe cutii
+			if (med_rez[i].getPret() == 1)
+				cout << "  Pret: " << med_rez[i].getPret() << " leu" << endl; //1 leu
+			else
+				cout << "  Pret: " << med_rez[i].getPret() << " lei" << endl; //lei
+		}
+}
